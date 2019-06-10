@@ -1,0 +1,28 @@
+{
+  "name": "redis",
+  "version": "1.0.0",
+  "description": "mini redis client in nodejs",
+  "main": "index.js",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "ms": "^2.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwoktung/redis.git"
+  },
+  "keywords": [
+    "redis",
+    "client",
+    "nodejs"
+  ],
+  "author": "kwoktung",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kwoktung/redis/issues"
+  },
+  "homepage": "https://github.com/kwoktung/redis#readme"
+}
