@@ -2,13 +2,13 @@
   "name": "redis",
   "version": "1.0.0",
   "description": "mini redis client in nodejs",
-  "main": "index.js",
+  "main": "built/index.js",
   "dependencies": {
-    "debug": "^4.1.1",
-    "ms": "^2.1.2"
+    "debug": "^4.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf built && tsc",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,10 @@
   "bugs": {
     "url": "https://github.com/kwoktung/redis/issues"
   },
-  "homepage": "https://github.com/kwoktung/redis#readme"
+  "homepage": "https://github.com/kwoktung/redis#readme",
+  "devDependencies": {
+    "@types/debug": "^4.1.4",
+    "@types/node": "^12.0.7",
+    "mocha": "^6.1.4"
+  }
 }

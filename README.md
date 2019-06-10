@@ -1,2 +1,4 @@
 # redis
-redis client in typescript
+
+redis mini client in typescript
+
