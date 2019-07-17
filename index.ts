@@ -1,5 +1,6 @@
 import * as net from "net"
 import Command from "./command";
+import RedisParse from "./parse";
 
 interface RedisOpts {
   db?: number;
@@ -55,32 +56,32 @@ class Redis {
   }
 
   private onDataHanlder = (data: Buffer) => {
-    const arr = data.toString().split("\r\n").filter(i => i);
-    for(let i = 0, len = arr.length; i < len; i++) {
-      const item = arr[i];
-      const c = this.commandQuene.shift();
-      switch (item[0]) {
-        case "+": {
-          (c as Command).resolve(slice(item, 1))
-        }
-        case ":": {
-          (c as Command).resolve(slice(item, 1))
-        }
-        case "-": {
-          (c as Command).reject(slice(item, 5))
-        }
-        case "$": {
-          i += 1;
-          (c as Command).resolve(arr[i+1])
-        }
-        default: {
-          (c as Command).resolve(item)
-        }
+    const parser = new RedisParse({
+      onParseArray: (dataArr) => {
+        const command = this.commandQuene.shift() as Command;
+        command.resolve(dataArr)
+      },
+      onParseErrors: (error) => {
+        const command = this.commandQuene.shift() as Command;
+        command.resolve(error)
+      },
+      onParseBulkSring: (bulkString) => {
+        const command = this.commandQuene.shift() as Command;
+        command.resolve(bulkString)
+      },
+      onParseIntegers: (interger) => {
+        const command = this.commandQuene.shift() as Command;
+        command.resolve(interger)
+      },
+      onParseStrings: (data) => {
+        const command = this.commandQuene.shift() as Command;
+        command.resolve(data)
       }
-    }
+    })
+    parser.parse(data.toString())
   }
   private onErrorHanlder(e: Error){
-    console.error("收到错误消息", e.message)
+    console.error(`redis client got error message ${e.message}`)
   }
 }
 
