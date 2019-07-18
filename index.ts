@@ -15,36 +15,29 @@ function slice(target: string, start: number = 0, end?: number): string {
 
 class Redis {
   options: RedisOpts;
-  client?: net.Socket;
+  client: net.Socket;
   commandQuene: Command[];
   constructor(options: RedisOpts = { port: 6379, host: "127.0.0.1" }) {
     this.options = options;
     this.commandQuene = [];
-  }
-
-  public connect(opts?: RedisOpts): Redis {
-    const options = { ...this.options, ...opts };
     this.client = net.connect(options.port, options.host, () => {
       if(options.passwd) {
-        // AUTH 密码验证
         this.sendCommand(new Command("AUTH", options.passwd))
       }
       if(options.db) {
-        // SELECT 数据
         this.sendCommand(new Command("SELECT", options.db))
       }
     });
     this.client.on("data", this.onDataHanlder);
     this.client.on("error", this.onErrorHanlder);
-    return this;
   }
 
   public sendCommand(command: Command): Promise<any> {
-    (this.client as net.Socket).write(command.stringify(), (e) => {
+    this.client.write(command.toString(), (e) => {
       if(e) { return }
       this.commandQuene.push(command);
     });
-    return command.promise
+    return command.asPromise()
   }
 
   public set(key: string, value: any, ...options: any[]) {
@@ -59,23 +52,23 @@ class Redis {
     const parser = new RedisParse({
       onParseArray: (dataArr) => {
         const command = this.commandQuene.shift() as Command;
-        command.resolve(dataArr)
+        command.setArr(dataArr)
       },
       onParseErrors: (error) => {
         const command = this.commandQuene.shift() as Command;
-        command.resolve(error)
+        command.setErrMsg(error)
       },
-      onParseBulkSring: (bulkString) => {
+      onParseBulkSrings: (bulkString) => {
         const command = this.commandQuene.shift() as Command;
-        command.resolve(bulkString)
+        command.setBulkMsg(bulkString)
       },
       onParseIntegers: (interger) => {
         const command = this.commandQuene.shift() as Command;
-        command.resolve(interger)
+        command.setInteger(interger)
       },
       onParseStrings: (data) => {
         const command = this.commandQuene.shift() as Command;
-        command.resolve(data)
+        command.setStrMsg(data)
       }
     })
     parser.parse(data.toString())
