@@ -1,6 +1,6 @@
 import * as net from "net"
 import Command from "./command";
-import RedisParse from "./parse";
+import RedisParser from "./parser";
 
 interface RedisOpts {
   db?: number;
@@ -49,7 +49,7 @@ class Redis {
   }
 
   private onDataHanlder = (data: Buffer) => {
-    const parser = new RedisParse({
+    const parser = new RedisParser({
       onParseArray: (dataArr) => {
         const command = this.commandQuene.shift() as Command;
         command.setArr(dataArr)

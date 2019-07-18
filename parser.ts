@@ -1,4 +1,4 @@
-interface RedisParseOption {
+interface RedisParserOption {
     onParseIntegers(interger: number): any;
     onParseErrors(error: string): any;
     onParseStrings(data: string): any;
@@ -6,13 +6,13 @@ interface RedisParseOption {
     onParseArray(dataArr: string[]): any;
 }
 
-export default class RedisParse {
-    options: RedisParseOption
-    constructor(options: RedisParseOption) {
+export default class RedisParser {
+    options: RedisParserOption
+    constructor(options: RedisParserOption) {
         this.options = options
     }
     public parse(data: string) {
-        const lines = data.split("\r\n").filter(i => i)
+        const lines = data.split("\r\n")
         while (lines.length) {
             const line = lines[0]
             const char = line[0];
@@ -44,6 +44,9 @@ export default class RedisParse {
                     const dataArr = this.parseArray(lines);
                     this.options.onParseArray(dataArr)
                     break
+                }
+                default: {
+                    lines.shift()
                 }
             }
         }
@@ -84,7 +87,14 @@ export default class RedisParse {
             const bulkString = lines.shift() as string;
             return bulkString
         } else {
-            return ""
+            return "" // should return null or undefine instead of empty string
+            /**
+             * This is called a Null Bulk String. The client library API should 
+             * not return an empty string, but a nil object, when the server replies
+             *  with a Null Bulk String. For example a Ruby library should return 'nil' 
+             * while a C library should return NULL 
+             * (or set a special flag in the reply object), and so forth
+             * */ 
         }
     }
     private parseIntegers(line: string): number {
