@@ -1,13 +1,13 @@
 import EventEmitter from "events"
 
-enum RedisType { Integers, Errors, Strings, BulkSrings, Array }
-interface RedisResponse {
+export enum RedisType { Integers, Errors, Strings, BulkSrings, Array }
+export interface RedisResponse {
   type: RedisType,
-  integer?: number,
+  intMsg?: number,
   errMsg?: string,
   strMsg?: string,
   bulkMsg?: string,
-  array?: string[]
+  arrMsg?: string[]
 }
 
 class RedisCommand extends EventEmitter {
@@ -35,8 +35,8 @@ class RedisCommand extends EventEmitter {
     });
   }
 
-  public setInteger(integer: number) {
-    this.res = { type: RedisType.Integers, integer: integer }
+  public setIntMsg(integer: number) {
+    this.res = { type: RedisType.Integers, intMsg: integer }
     this.emit("RedisResOK")
   }
 
@@ -56,7 +56,7 @@ class RedisCommand extends EventEmitter {
   }
 
   public setArr(arr: string[]) {
-    this.res = { type: RedisType.Array, array: arr }
+    this.res = { type: RedisType.Array, arrMsg: arr }
     this.emit("RedisResOK")
   }
 
@@ -68,6 +68,10 @@ class RedisCommand extends EventEmitter {
     })
     return bytes
   }
+}
+
+export function createCommand(name: string, ...params: string[]) {
+  return new RedisCommand(name, ...params);
 }
 
 export default RedisCommand

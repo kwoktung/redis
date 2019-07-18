@@ -1,9 +1,9 @@
 interface RedisParserOption {
-    onParseIntegers(interger: number): any;
-    onParseErrors(error: string): any;
-    onParseStrings(data: string): any;
-    onParseBulkSrings(bulkString: string): any;
-    onParseArray(dataArr: string[]): any;
+    onParseIntegers?(interger: number): any;
+    onParseErrors?(error: string): any;
+    onParseStrings?(data: string): any;
+    onParseBulkSrings?(bulkString: string): any;
+    onParseArray?(dataArr: string[]): any;
 }
 
 export default class RedisParser {
@@ -20,29 +20,29 @@ export default class RedisParser {
                 case ":": {
                     const interger = this.parseIntegers(line)
                     lines.shift();
-                    this.options.onParseIntegers(interger)
+                    this.options.onParseIntegers && this.options.onParseIntegers(interger)
                     break;
                 }
                 case "+": {
                     const data = this.parseStrings(line);
                     lines.shift();
-                    this.options.onParseStrings(data)
+                    this.options.onParseStrings && this.options.onParseStrings(data)
                     break
                 }
                 case "-": {
                     const message = this.parseErrors(line)
                     lines.shift();
-                    this.options.onParseErrors(message);
+                    this.options.onParseErrors && this.options.onParseErrors(message);
                     break
                 }
                 case "$": {
                     const bulkString = this.parseBulkString(lines);
-                    this.options.onParseBulkSrings(bulkString);
+                    this.options.onParseBulkSrings && this.options.onParseBulkSrings(bulkString);
                     break
                 }
                 case "*": {
                     const dataArr = this.parseArray(lines);
-                    this.options.onParseArray(dataArr)
+                    this.options.onParseArray && this.options.onParseArray(dataArr)
                     break
                 }
                 default: {

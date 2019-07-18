@@ -1,8 +1,9 @@
 # mini-redis
 
-超级迷你版的 Redis Node 客服端
+Super mini Redis Node Client
 
-# 完成的功能
+# Completed Feature
 
-1. 基本命令(SET, GET)
+1. Basic Command, such as get set
+2. sub/pub
 
