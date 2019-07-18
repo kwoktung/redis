@@ -1,4 +1,4 @@
-# redis
+# mini-redis
 
 超级迷你版的 Redis Node 客服端
 
