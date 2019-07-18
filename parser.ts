@@ -56,25 +56,23 @@ export default class RedisParser {
         let number = +String.prototype.slice.call(numberData, 1);
         const dataArr = [];
         while (number > 0) {
-            while (lines.length) {
-                const line = lines[0]
-                const char = line[0];
-                switch (char) {
-                    case ":": {
-                        dataArr.push(this.parseIntegers(line));
-                        lines.shift();
-                        break;
-                    }
-                    case "+": {
-                        dataArr.push(this.parseStrings(line));
-                        lines.shift();
-                        break
-                    }
-                    case "$": {
-                        dataArr.push(this.parseBulkString(lines))
-                        break
-                    }
-                }   
+            const line = lines[0]
+            const char = line[0];
+            switch (char) {
+                case ":": {
+                    dataArr.push(this.parseIntegers(line));
+                    lines.shift();
+                    break;
+                }
+                case "+": {
+                    dataArr.push(this.parseStrings(line));
+                    lines.shift();
+                    break
+                }
+                case "$": {
+                    dataArr.push(this.parseBulkString(lines))
+                    break
+                }
             }
             number--;
         }
