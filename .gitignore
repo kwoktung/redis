@@ -1,5 +1,3 @@
 node_modules/
 built/
-*.js
-!test/*.js
 package-lock.json
