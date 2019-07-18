@@ -2,7 +2,7 @@ interface RedisParseOption {
     onParseIntegers(interger: number): any;
     onParseErrors(error: string): any;
     onParseStrings(data: string): any;
-    onParseBulkSring(bulkString: string): any;
+    onParseBulkSrings(bulkString: string): any;
     onParseArray(dataArr: string[]): any;
 }
 
@@ -37,7 +37,7 @@ export default class RedisParse {
                 }
                 case "$": {
                     const bulkString = this.parseBulkString(lines);
-                    this.options.onParseBulkSring(bulkString);
+                    this.options.onParseBulkSrings(bulkString);
                     break
                 }
                 case "*": {
