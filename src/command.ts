@@ -1,14 +1,50 @@
 import EventEmitter from "events"
 
 export enum RedisType { Integers, Errors, Strings, BulkSrings, Array }
-export interface RedisResponse {
-  type: RedisType,
-  intMsg?: number,
-  errMsg?: string,
-  strMsg?: string,
-  bulkMsg?: string,
+
+export class RedisResponse {
+  type: RedisType;
+  intMsg?: number;
+  errMsg?: string;
+  strMsg?: string;
+  bulkMsg?: string;
   arrMsg?: string[]
+  constructor(options: {
+    type: RedisType,
+    intMsg?: number;
+    errMsg?: string;
+    strMsg?: string;
+    bulkMsg?: string;
+    arrMsg?: string[]
+  }) {
+    this.type = options.type
+    this.intMsg = options.intMsg
+    this.errMsg = options.errMsg
+    this.strMsg = options.strMsg
+    this.bulkMsg = options.bulkMsg
+    this.arrMsg = options.arrMsg
+  }
+  public toValue() {
+    switch (this.type) {
+      case RedisType.Errors: {
+        return this.errMsg
+      }
+      case RedisType.Array: {
+        return this.arrMsg
+      }
+      case RedisType.Integers: {
+        return this.intMsg
+      }
+      case RedisType.Strings: {
+        return this.strMsg
+      }
+      case RedisType.BulkSrings: {
+        return this.bulkMsg
+      }
+    }
+  }
 }
+
 
 class RedisCommand extends EventEmitter {
   private name: string;
@@ -36,27 +72,27 @@ class RedisCommand extends EventEmitter {
   }
 
   public setIntMsg(integer: number) {
-    this.res = { type: RedisType.Integers, intMsg: integer }
+    this.res = new RedisResponse({ type: RedisType.Integers, intMsg: integer })
     this.emit("RedisResOK")
   }
 
   public setErrMsg(errMsg: string) {
-    this.res = { type: RedisType.Errors, errMsg: errMsg }
+    this.res = new RedisResponse({ type: RedisType.Errors, errMsg: errMsg })
     this.emit("RedisResOK")
   }
 
   public setStrMsg(strMsg: string) {
-    this.res = { type: RedisType.Strings, strMsg }
+    this.res = new RedisResponse({ type: RedisType.Strings, strMsg })
     this.emit("RedisResOK")
   }
 
   public setBulkMsg(bulkMsg: string) {
-    this.res = { type: RedisType.BulkSrings, bulkMsg }
+    this.res = new RedisResponse({ type: RedisType.BulkSrings, bulkMsg })
     this.emit("RedisResOK")
   }
 
   public setArr(arr: string[]) {
-    this.res = { type: RedisType.Array, arrMsg: arr }
+    this.res = new RedisResponse({ type: RedisType.Array, arrMsg: arr })
     this.emit("RedisResOK")
   }
 

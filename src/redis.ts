@@ -88,17 +88,30 @@ class Redis extends EventEmitter {
     console.error(`redis client got error message ${e.message}`)
   }
 
-  public get(key: string) {
-    return this.send("GET", key)
+  public async get(key: string) {
+    const res = await this.send("GET", key)
+    return res.toValue()
   }
 
-  public set(key: string, value: string) {
-    return this.send("SET", key, value)
+  public set(key: string, value: string): void {
+    this.send("SET", key, value)
   }
 
   public subscribe(channel: string) {
     this.listening = true;
     return this.send("SUBSCRIBE", channel)
+  }
+
+  public psubscribe(channel: string) {
+    this.listening = true;
+    return this.send("PSUBSCRIBE", channel)
+  }
+
+  public async unpsubscribe(channel: string) {
+    const { type, arrMsg } = await this.send("PUNSUBSCRIBE", channel);
+    if (type == RedisType.Array && arrMsg && arrMsg[2] && +arrMsg[2] == 0) {
+      this.listening = false;
+    }
   }
 
   public async unsubscribe(channel: string) {
