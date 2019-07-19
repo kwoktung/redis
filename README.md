@@ -9,9 +9,9 @@ super mini redis client written by nodejs for tour, don't use in production
 
 # usage
 
-```javascript
-npm i mini-redis
+`npm i mini-redis`
 
+```
 const Redis = require("mini-redis")
 const client = new Redis()
 
