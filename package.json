@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "mini redis client in nodejs",
   "main": "built/index.js",
-  "dependencies": {
-    "debug": "^4.1.1"
-  },
   "scripts": {
     "build": "rm -rf built && tsc",
-    "test": "mocha  --require ts-node/register test/*.ts"
+    "test_unit": "mocha  --require ts-node/register test/unit/*.ts",
+    "test_e2e": "npm run build && mocha test/e2e/*.js",
+    "test": "npm run test_unit && npm run test_e2e"
   },
   "repository": {
     "type": "git",

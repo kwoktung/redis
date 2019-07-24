@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import RESParser from "../src/parser";
+import RESParser from "../../src/parser";
 
 const TestCase1 = [
   { input:  ":1\r\n", result: 1 },
