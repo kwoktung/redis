@@ -1,4 +1,4 @@
-import RedisBase, { RedisOpts } from "./base"
+import RedisBase from "./base"
 
 const GETTER_METHODS = [
   'GET', 'GETBIT', 'GETRANGE', 'GETSET', 
@@ -25,7 +25,7 @@ function addMethods(self: any) {
   
   SETTER_METHODS.forEach(function(method: string) {
     self.prototype[method.toLowerCase()] = function(key: string, ...params: any[]) {
-      this.sendCommand(method, key, ...params)
+      return this.sendCommand(method, key, ...params)
     }
   })
 }

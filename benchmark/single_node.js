@@ -28,6 +28,10 @@ suite("Basic Operation", function() {
     waitReady(start);
   });
 
+  bench("SET foo bar", function(next) {
+    client.set("foo", "bar").then(next);
+  });
+
   bench("INCR foo", function(next) {
     client.incr("foo").then(next);
   });
