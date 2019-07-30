@@ -5,9 +5,7 @@
   "main": "built/index.js",
   "scripts": {
     "build": "rm -rf built && tsc",
-    "test_unit": "mocha  --require ts-node/register test/unit/*.ts",
-    "test_e2e": "npm run build && mocha test/e2e/*.js",
-    "test": "npm run test_unit && npm run test_e2e"
+    "test": "mocha  --require ts-node/register test/**/*.ts"
   },
   "repository": {
     "type": "git",
