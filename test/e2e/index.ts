@@ -5,7 +5,7 @@ import Redis from "../../src/redis";
 describe("Method get/exists", function () {
     let client = new Redis() as any;
     after(function() {
-        client.destroy()
+        client.disconnect()
     });
     const key = Math.random()
     const value = Math.random()

@@ -85,7 +85,7 @@ class RedisBase extends EventEmitter {
     console.error(`redis client got error message ${e.message}`)
   }
 
-  public destroy() {
+  public disconnect() {
     if (this.client) {
       this.client.end()
     }
