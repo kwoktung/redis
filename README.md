@@ -1,6 +1,6 @@
-# mini-redis
+# iredis
 
-super mini redis client written by nodejs for tour, don't use in production
+mini redis client written by nodejs for tour, don't use in production
 
 # completed feature
 
@@ -9,10 +9,10 @@ super mini redis client written by nodejs for tour, don't use in production
 
 # usage
 
-`npm i mini-redis`
+`npm i iredis`
 
 ```
-const Redis = require("mini-redis")
+const Redis = require("iredis")
 const client = new Redis()
 
 client.set('key', 'value');

@@ -1,7 +1,7 @@
 {
-  "name": "mini-redis",
+  "name": "iredis",
   "version": "1.2.1",
-  "description": "mini redis client in nodejs",
+  "description": "redis client in nodejs",
   "main": "built/index.js",
   "scripts": {
     "build": "rm -rf built && tsc",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kwoktung/redis.git"
+    "url": "git+https://github.com/kwoktung/iredis.git"
   },
   "keywords": [
     "redis",
@@ -20,9 +20,9 @@
   "author": "kwoktung",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kwoktung/redis/issues"
+    "url": "https://github.com/kwoktung/iredis/issues"
   },
-  "homepage": "https://github.com/kwoktung/redis#readme",
+  "homepage": "https://github.com/kwoktung/iredis#readme",
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.0.7",
